@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciclo em Foco</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #6f1d1b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #4a0d0a;
+    }
+
+    .nav-link {
+      color: #fff !important;
+      font-weight: bold;
+    }
+
+    .btn-login {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .hero-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      padding: 2rem;
+    }
+
+    .hero-image {
+  flex: 0 0 30%;
+  max-width: 30%;
+  padding: 1rem;
+  text-align: center;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0; /* bordas quadradas */
+}
+
+
+    .hero-text {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 1rem;
+      text-align: left;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .footer a {
+      color: #ccc;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Menu de Navegação -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand text-white font-weight-bold" href="/">Ciclo em Foco</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="/registro/">Registro</a></li>
+        <li class="nav-item"><a class="nav-link" href="/previsao/">Previsão</a></li>
+        <li class="nav-item"><a class="nav-link" href="/dicas/">Dicas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/sintomas/">Sintomas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/">Administração</a></li> 
+      </ul>
+      <a href="/login/" class="btn btn-login">LOGIN</a>
+    </div>
+  </nav>
+  
+  <!-- 🖼️ Conteúdo Principal com imagem ao lado -->
+  <div class="container-fluid hero-section">
+    <div class="hero-image">
+      <img src="/static/ilustracao.png" alt="Ilustração feminina Ciclo em Foco">
+    </div>
+    <div class="hero-text">
+      <h1>Ciclo em Foco</h1>
+      <p>Ciclo em Foco é um aplicativo web desenvolvido</p>
+      <p>para auxiliar mulheres no acompanhamento do ciclo menstrual.</p>
+      <p>O sistema permite o registro de menstruação,</p> 
+      <p>sintomas e atividades do dia para gerar gráficos, dicas e oferecer dados.</p>
+      </p>
+    </div>
+  </div>
+
+  <!-- 📞 Rodapé Centralizado -->
+  <div class="footer">
+    <p>Siga-nos no Instagram: <strong>@cicloemfoco</strong></p>
+    <p>Contato: <a href="mailto:contato@cicloemfoco.com.br">contato@cicloemfoco.com.br</a></p>
+  </div>
+
+  <!-- Bootstrap JS e jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
