@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import timedelta
 from .models import RegistroCiclo
 from .models import Dica
+from django.contrib.auth.forms import UserCreationForm
 
 def dicas(request):
     todas_dicas = Dica.objects.all().order_by('-data_criacao')
@@ -70,3 +71,23 @@ from django.shortcuts import render
 def previsao(request):
     return render(request, 'previsao.html')
 
+from django.contrib.auth.views import LoginView
+
+class UsuarioLoginView(LoginView):
+    template_name = 'login.html'
+
+    def get_success_url(self):
+        if self.request.user.is_superuser:
+            return '/admin/'
+        return '/'
+
+
+def cadastro(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # redireciona para login após cadastro
+    else:
+        form = UserCreationForm()
+    return render(request, 'cadastro.html', {'form': form})
