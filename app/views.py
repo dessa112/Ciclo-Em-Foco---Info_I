@@ -2,6 +2,44 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 from django.views import View
 from django.contrib import messages
+from .models import CicloMenstrual
+from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+from .models import RegistroCiclo
+from .models import Dica
+
+def dicas(request):
+    todas_dicas = Dica.objects.all().order_by('-data_criacao')
+    return render(request, 'dicas.html', {'dicas': todas_dicas})
+
+
+@login_required
+def registro(request):
+    if request.method == 'POST':
+        RegistroCiclo.objects.create(
+            usuario=request.user,
+            data_menstruacao=request.POST['data_menstruacao'],
+            sintomas=request.POST['sintomas'],
+            atividades=request.POST['atividades'],
+            observacoes=request.POST['observacoes']
+        )
+        return redirect('registro')
+
+    registros = RegistroCiclo.objects.filter(usuario=request.user).order_by('-data_menstruacao')
+    return render(request, 'registro.html', {'registros': registros})
+
+@login_required
+def previsao(request):
+    ciclo = CicloMenstrual.objects.filter(usuario=request.user).first()
+    proxima_data = None
+
+    if ciclo:
+        proxima_data = ciclo.ultima_menstruacao + timedelta(days=ciclo.duracao_ciclo)
+
+    context = {
+        'proxima_data': proxima_data
+    }
+    return render(request, 'previsao.html', context)
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
@@ -26,3 +64,9 @@ class UsuarioLoginView(LoginView):
         if self.request.user.is_superuser:
             return '/admin/'  # redireciona admin
         return '/'  # redireciona usuário comum
+    
+from django.shortcuts import render
+
+def previsao(request):
+    return render(request, 'previsao.html')
+
