@@ -8,25 +8,41 @@ from datetime import timedelta
 from .models import RegistroCiclo
 from .models import Dica
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def sair(request):
+    logout(request)
+    return redirect('/')
+
+
+def seguranca(request):
+    return render(request, 'seguranca.html')
+
 
 def dicas(request):
     todas_dicas = Dica.objects.all().order_by('-data_criacao')
     return render(request, 'dicas.html', {'dicas': todas_dicas})
 
 
-@login_required
+##@login_required
 def registro(request):
     if request.method == 'POST':
         RegistroCiclo.objects.create(
-            usuario=request.user,
-            data_menstruacao=request.POST['data_menstruacao'],
-            sintomas=request.POST['sintomas'],
-            atividades=request.POST['atividades'],
-            observacoes=request.POST['observacoes']
+            usuario=request.user if request.user.is_authenticated else None,
+            data_menstruacao=request.POST.get('data_menstruacao'),
+            sintomas=request.POST.get('sintomas'),
+            atividades=request.POST.get('atividades'),
+            observacoes=request.POST.get('observacoes')
         )
         return redirect('registro')
 
-    registros = RegistroCiclo.objects.filter(usuario=request.user).order_by('-data_menstruacao')
+    if request.user.is_authenticated:
+        registros = RegistroCiclo.objects.filter(usuario=request.user).order_by('-data_menstruacao')
+    else:
+        registros = RegistroCiclo.objects.filter(usuario=None).order_by('-data_menstruacao')
+
     return render(request, 'registro.html', {'registros': registros})
 
 @login_required

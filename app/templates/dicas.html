@@ -54,7 +54,7 @@
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+  
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
@@ -65,9 +65,19 @@
         <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
         <li class="nav-item"><a class="nav-link" href="/admin/">Administração</a></li>
       </ul>
-      <a href="/login/" class="btn btn-login">LOGIN</a>
+  
+      {% if user.is_authenticated %}
+      <form action="/logout/" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-login">SAIR</button>
+      </form>
+    {% else %}
+      <a href="/login/" class="btn btn-login">ENTRAR</a>
+    {% endif %}
+      
     </div>
   </nav>
+  
 
   <!-- 💡 Conteúdo Principal -->
   <div class="container mt-4">

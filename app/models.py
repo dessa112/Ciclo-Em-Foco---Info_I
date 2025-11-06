@@ -49,14 +49,14 @@ class CicloMenstrual(models.Model):
         return f"Ciclo de {self.usuario.username}"
     
 class RegistroCiclo(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     data_menstruacao = models.DateField()
     sintomas = models.TextField(blank=True)
     atividades = models.TextField(blank=True)
     observacoes = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.usuario.username} - {self.data_menstruacao}"  
+        return f"{self.usuario.username if self.usuario else 'Anônimo'} - {self.data_menstruacao}"
 
 from django.db import models
 
