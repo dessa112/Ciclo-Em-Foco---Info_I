@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Cadastro - Ciclo em Foco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
     body {
@@ -10,6 +12,7 @@
       color: white;
       font-family: Arial, sans-serif;
       padding-top: 70px;
+      margin: 0;
     }
     .navbar {
       background-color: #4a0d0a;
@@ -33,48 +36,62 @@
     .form-box {
       background-color: #4a0d0a;
       padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
     .form-control {
       background-color: #fff;
       color: #000;
+      border-radius: 6px;
+    }
+    .form-control:focus {
+      border-color: #000;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
     h2 {
       text-align: center;
       margin-bottom: 1.5rem;
+      font-weight: bold;
+    }
+    .extra-links {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .extra-links a {
+      color: #ddd;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+    .extra-links a:hover {
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: #ccc;
+      background-color: #4a0d0a;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
 
   <!-- 🔝 Barra de Navegação -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <a class="navbar-brand text-white font-weight-bold" href="/">Ciclo em Foco</a>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand font-weight-bold" href="/">Ciclo em Foco</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir navegação">
       <span class="navbar-toggler-icon"></span>
     </button>
   
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="/registro/">Registro</a></li>
-        <li class="nav-item"><a class="nav-link" href="/previsao/">Previsão</a></li>
-        <li class="nav-item"><a class="nav-link" href="/dicas/">Dicas</a></li>
-        <li class="nav-item"><a class="nav-link" href="/sintomas/">Sintomas</a></li>
-        <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/">Administração</a></li>
-      </ul>
-  
+
       {% if user.is_authenticated %}
-    <form action="/logout/" method="post" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-login">SAIR</button>
-    </form>
-  {% else %}
-    <a href="/login/" class="btn btn-login">ENTRAR</a>
-  {% endif %}
+        <form action="/logout/" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-login">Sair</button>
+        </form>
+      {% endif %}
     </div>
   </nav>
 
@@ -84,11 +101,72 @@
       <h2>Crie sua conta</h2>
       <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <!-- Usuário -->
+        <div class="form-group">
+          <label for="username">Usuário</label>
+          <input type="text" id="username" name="username" class="form-control" required>
+          <small id="usernameHelp" class="form-text text-muted" style="display:none;">
+            O nome de usuário deve ter entre 4 e 20 caracteres e não pode conter espaços.
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+          <small id="emailHelp" class="form-text text-muted" style="display:none;">
+            Informe um e-mail válido. Ele será usado para recuperação de senha.
+          </small>
+        </div>
+
+        <!-- Senha -->
+        <div class="form-group">
+          <label for="password1">Senha</label>
+          <input type="password" id="password1" name="password1" class="form-control" required>
+          <small id="passwordHelp" class="form-text text-muted" style="display:none;">
+            A senha deve ter pelo menos 8 caracteres, incluindo letras e números.
+          </small>
+        </div>
+
+        <!-- Confirmar Senha -->
+        <div class="form-group">
+          <label for="password2">Confirmar Senha</label>
+          <input type="password" id="password2" name="password2" class="form-control" required>
+          <small id="password2Help" class="form-text text-muted" style="display:none;">
+            Repita a mesma senha para confirmar.
+          </small>
+        </div>
+
         <button type="submit" class="btn btn-dark mt-3 w-100">Cadastrar</button>
       </form>
+
+      <div class="extra-links text-center mt-3">
+        <p>Já tem conta? <a href="/login/">Entrar</a></p>
+      </div>
     </div>
   </div>
+
+  <!-- Script para mostrar/ocultar dicas -->
+  <script>
+    function toggleHelp(fieldId, helpId) {
+      const field = document.getElementById(fieldId);
+      const help = document.getElementById(helpId);
+
+      field.addEventListener('focus', () => help.style.display = 'block');
+      field.addEventListener('blur', () => help.style.display = 'none');
+    }
+
+    toggleHelp('username', 'usernameHelp');
+    toggleHelp('email', 'emailHelp');
+    toggleHelp('password1', 'passwordHelp');
+    toggleHelp('password2', 'password2Help');
+  </script>
+
+  <!-- 📞 Rodapé -->
+  <footer>
+    <p>&copy; 2025 Ciclo em Foco - Todos os direitos reservados</p>
+  </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

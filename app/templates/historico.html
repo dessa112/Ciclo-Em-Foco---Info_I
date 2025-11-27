@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico - Ciclo em Foco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    body { background: linear-gradient(135deg, #6f1d1b, #4a0d0a); color:#fff; font-family:Arial,sans-serif; padding-top:80px; }
+    .navbar { background-color:#4a0d0a; }
+    .nav-link { color:#fff !important; font-weight:bold; }
+    .history-card { background:#7a2a25; border-radius:16px; padding:1rem; margin-bottom:1rem; box-shadow:0 4px 12px rgba(0,0,0,0.4); }
+    h2 { text-align:center; margin-bottom:2rem; font-weight:bold; }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Barra de Navegação -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand font-weight-bold" href="/">Ciclo em Foco</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="/registro/">Registro</a></li>
+        <li class="nav-item"><a class="nav-link" href="/previsao/">Previsão</a></li>
+        <li class="nav-item"><a class="nav-link" href="/dicas/">Dicas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/sintomas/">Sintomas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
+      </ul>
+      {% if user.is_authenticated %}
+        <form action="/logout/" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-light">Sair</button>
+        </form>
+      {% else %}
+        <a href="/login/" class="btn btn-light">Entrar</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- 📊 Conteúdo Principal -->
+  <div class="container mt-4">
+    <h2>📊 Histórico do ciclo</h2>
+
+    {% if registros %}
+      {% for r in registros %}
+        <div class="history-card">
+          <p><strong>Data da menstruação:</strong> {{ r.data_menstruacao }}</p>
+          <p><strong>Sintomas:</strong> {{ r.sintomas }}</p>
+          <p><strong>Atividades:</strong> {{ r.atividades|default:"-" }}</p>
+          <p><strong>Observações:</strong> {{ r.observacoes|default:"-" }}</p>
+          <p><small>Registrado em: {{ r.criado_em|date:"d/m/Y H:i" }}</small></p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center">Nenhum registro encontrado.</p>
+    {% endif %}
+  </div>
+
+  <div class="container mt-4">
+    <h2>📊 Histórico do ciclo</h2>
+  
+    {% if registros %}
+      {% for r in registros %}
+        <div class="history-card">
+          <p><strong>Data da menstruação:</strong> {{ r.data_menstruacao }}</p>
+          <p><strong>Sintomas:</strong> {{ r.sintomas }}</p>
+          <p><strong>Atividades:</strong> {{ r.atividades|default:"-" }}</p>
+          <p><strong>Observações:</strong> {{ r.observacoes|default:"-" }}</p>
+          <p><small>Registrado em: {{ r.criado_em|date:"d/m/Y H:i" }}</small></p>
+  
+          <!-- Botões de ação -->
+          <a href="{% url 'editar_registro' r.id %}" class="btn btn-warning btn-sm">Editar</a>
+          <a href="{% url 'excluir_registro' r.id %}" class="btn btn-danger btn-sm"
+             onclick="return confirm('Tem certeza que deseja excluir este registro?');">Excluir</a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center">Nenhum registro encontrado.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

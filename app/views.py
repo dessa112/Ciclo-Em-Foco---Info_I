@@ -12,6 +12,15 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+
+from django.shortcuts import render
+
+def historico(request):
+    return render(request, "historico.html")
+
+def sintomas(request):
+    return render(request, "sintomas.html")
+
 def sair(request):
     logout(request)
     return redirect('/')
@@ -36,15 +45,30 @@ def registro(request):
             atividades=request.POST.get('atividades'),
             observacoes=request.POST.get('observacoes')
         )
-        return redirect('registro')
+        return redirect('historico')
+    return render(request, "registro.html")
 
-    if request.user.is_authenticated:
-        registros = RegistroCiclo.objects.filter(usuario=request.user).order_by('-data_menstruacao')
-    else:
-        registros = RegistroCiclo.objects.filter(usuario=None).order_by('-data_menstruacao')
+def historico(request):
+    registros = RegistroCiclo.objects.filter(
+        usuario=request.user if request.user.is_authenticated else None
+    ).order_by('-data_menstruacao')
+    return render(request, "historico.html", {"registros": registros})
 
-    return render(request, 'registro.html', {'registros': registros})
+def editar_registro(request, id):
+    registro = get_object_or_404(RegistroCiclo, id=id, usuario=request.user)
+    if request.method == 'POST':
+        registro.data_menstruacao = request.POST.get('data_menstruacao')
+        registro.sintomas = request.POST.get('sintomas')
+        registro.atividades = request.POST.get('atividades')
+        registro.observacoes = request.POST.get('observacoes')
+        registro.save()
+        return redirect('historico')
+    return render(request, "editar_registro.html", {"registro": registro})
 
+def excluir_registro(request, id):
+    registro = get_object_or_404(RegistroCiclo, id=id, usuario=request.user)
+    registro.delete()
+    return redirect('historico')
 @login_required
 def previsao(request):
     ciclo = CicloMenstrual.objects.filter(usuario=request.user).first()
@@ -107,3 +131,21 @@ def cadastro(request):
     else:
         form = UserCreationForm()
     return render(request, 'cadastro.html', {'form': form})
+
+def herpes(request):
+    return render(request, "temas/herpes-e-vida-sexual.html")
+
+def libido(request):
+    return render(request, "temas/como-aumentar-libido.html")
+
+def sexo_anal(request):
+    return render(request, "temas/sexo-anal-iniciantes.html")
+
+def bolinhas(request):
+    return render(request, "temas/bolinhas-na-vagina.html")
+
+def atraso(request):
+    return render(request, "temas/causas-atraso-menstrual.html")
+
+def teste(request):
+    return render(request, "temas/quando-fazer-teste.html")

@@ -4,38 +4,68 @@
 <head>
   <meta charset="UTF-8">
   <title>Login - Ciclo em Foco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
       background-color: #6f1d1b;
       color: white;
       font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
     }
     .login-container {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 1rem;
     }
     .login-box {
       background-color: #4a0d0a;
       padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
     }
     .login-box h2 {
       text-align: center;
       margin-bottom: 1.5rem;
+      font-weight: bold;
+    }
+    .form-control {
+      background-color: #fff;
+      color: #000;
+      border-radius: 6px;
+    }
+    .form-control:focus {
+      border-color: #000;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
     .btn-login {
       background-color: #000;
       color: #fff;
       width: 100%;
-    }
-    label {
       font-weight: bold;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-login:hover {
+      background-color: #222;
+    }
+    .extra-links {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .extra-links a {
+      color: #ddd;
+      text-decoration: underline;
+      margin: 0 0.5rem;
+      font-size: 0.9rem;
+    }
+    .extra-links a:hover {
+      color: #fff;
     }
   </style>
 </head>
@@ -47,14 +77,20 @@
         {% csrf_token %}
         <div class="form-group">
           <label for="username">Usuário</label>
-          <input type="text" name="username" class="form-control" required>
+          <input type="text" id="username" name="username" class="form-control" required>
         </div>
         <div class="form-group">
           <label for="password">Senha</label>
-          <input type="password" name="password" class="form-control" required>
+          <input type="password" id="password" name="password" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-login mt-3">Entrar</button>
       </form>
+
+      <!-- Links extras -->
+      <div class="extra-links">
+        <a href="/cadastro/">Cadastrar</a> |
+        <a href="/password_reset/">Esqueci minha senha</a>
+      </div>
     </div>
   </div>
 </body>

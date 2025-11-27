@@ -51,12 +51,13 @@ class CicloMenstrual(models.Model):
 class RegistroCiclo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     data_menstruacao = models.DateField()
-    sintomas = models.TextField(blank=True)
-    atividades = models.TextField(blank=True)
-    observacoes = models.TextField(blank=True)
+    sintomas = models.TextField()
+    atividades = models.TextField(blank=True, null=True)
+    observacoes = models.TextField(blank=True, null=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.usuario.username if self.usuario else 'Anônimo'} - {self.data_menstruacao}"
+        return f"{self.usuario} - {self.data_menstruacao}"
 
 from django.db import models
 

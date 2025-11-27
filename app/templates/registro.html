@@ -2,20 +2,24 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Registro de Ciclo</title>
+  <title>Registro - Ciclo em Foco</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
     body {
-      background-color: #6f1d1b;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding-top: 70px;
+      background: linear-gradient(135deg, #6f1d1b, #4a0d0a);
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      padding-top: 80px;
+      margin: 0;
     }
     .navbar {
       background-color: #4a0d0a;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
     .nav-link {
-      color: white !important;
+      color: #fff !important;
       font-weight: bold;
     }
     .btn-login {
@@ -27,36 +31,42 @@
       font-weight: bold;
     }
     .container {
-      max-width: 800px;
+      max-width: 700px;
       margin: auto;
     }
-    .form-box {
-      background-color: #4a0d0a;
-      padding: 1.5rem;
-      border-radius: 8px;
+    h2 {
+      font-weight: bold;
       margin-bottom: 2rem;
+      text-align: center;
     }
     .form-control {
-      background-color: #fff;
-      color: #000;
+      margin-bottom: 1rem;
     }
-    table {
-      background-color: white;
-      color: black;
+    .btn-submit {
+      background-color: #ffcfcf;
+      color: #4a0d0a;
+      font-weight: bold;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
     }
-    th {
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #ccc;
       background-color: #4a0d0a;
-      color: white;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
 
   <!-- 🔝 Barra de Navegação -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <a class="navbar-brand text-white font-weight-bold" href="/">Ciclo em Foco</a>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand font-weight-bold" href="/">Ciclo em Foco</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir navegação">
       <span class="navbar-toggler-icon"></span>
     </button>
   
@@ -68,75 +78,50 @@
         <li class="nav-item"><a class="nav-link" href="/dicas/">Dicas</a></li>
         <li class="nav-item"><a class="nav-link" href="/sintomas/">Sintomas</a></li>
         <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/">Administração</a></li>
       </ul>
   
-        {% if user.is_authenticated %}
-      <form action="/logout/" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-login">SAIR</button>
-      </form>
-    {% else %}
-      <a href="/login/" class="btn btn-login">ENTRAR</a>
-    {% endif %}
+      {% if user.is_authenticated %}
+        <form action="/logout/" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-login">Sair</button>
+        </form>
+      {% else %}
+        <a href="/login/" class="btn btn-login">Entrar</a>
+      {% endif %}
     </div>
   </nav>
-  
 
-  <!-- 📝 Formulário de Registro -->
-  <div class="container">
-    <h2 class="text-center mb-4">Registro de Ciclo</h2>
-    <div class="form-box">
-      <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="data_menstruacao">Data da Menstruação:</label>
-          <input type="date" name="data_menstruacao" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="sintomas">Sintomas:</label>
-          <textarea name="sintomas" class="form-control" rows="2"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="atividades">Atividades do Dia:</label>
-          <textarea name="atividades" class="form-control" rows="2"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="observacoes">Observações:</label>
-          <textarea name="observacoes" class="form-control" rows="2"></textarea>
-        </div>
-        <button type="submit" class="btn btn-dark mt-2">Salvar Registro</button>
-      </form>
-    </div>
+  <!-- 📋 Formulário de Registro -->
+  <div class="container mt-4">
+    <h2>📋 Registrar ciclo</h2>
 
-    <!-- 📋 Tabela de Registros -->
-    <h4 class="text-center mb-3">Seus Registros</h4>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Sintomas</th>
-          <th>Atividades</th>
-          <th>Observações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for registro in registros %}
-        <tr>
-          <td>{{ registro.data_menstruacao }}</td>
-          <td>{{ registro.sintomas }}</td>
-          <td>{{ registro.atividades }}</td>
-          <td>{{ registro.observacoes }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4" class="text-center">Nenhum registro encontrado.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <form method="post" action="/registro/">
+      {% csrf_token %}
+      
+      <!-- Campo para data da menstruação -->
+      <label for="data_menstruacao">Dia da menstruação:</label>
+      <input type="date" id="data_menstruacao" name="data_menstruacao" class="form-control" required>
+
+      <!-- Campo para sintomas -->
+      <label for="sintomas">Sintomas sentidos:</label>
+      <textarea id="sintomas" name="sintomas" class="form-control" rows="3" placeholder="Exemplo: cólica, dor de cabeça, inchaço..." required></textarea>
+
+      <!-- Campo para atividades -->
+      <label for="atividades">Atividades realizadas:</label>
+      <textarea id="atividades" name="atividades" class="form-control" rows="3" placeholder="Exemplo: exercícios, trabalho, descanso..."></textarea>
+
+      <!-- Campo para observações -->
+      <label for="observacoes">Observações:</label>
+      <textarea id="observacoes" name="observacoes" class="form-control" rows="3" placeholder="Exemplo: fluxo intenso, uso de remédios..."></textarea>
+
+      <button type="submit" class="btn-submit">Salvar Registro</button>
+    </form>
   </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- 📞 Rodapé -->
+  <footer>
+    <p>&copy; 2025 Ciclo em Foco - Todos os direitos reservados</p>
+  </footer>
+
 </body>
 </html>
