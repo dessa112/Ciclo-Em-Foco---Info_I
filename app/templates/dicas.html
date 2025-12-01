@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Dicas e Orientações - Ciclo em Foco</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
     body {
@@ -14,75 +13,48 @@
       padding-top: 80px;
       margin: 0;
     }
-    .navbar {
-      background-color: #4a0d0a;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-    .nav-link {
-      color: #fff !important;
-      font-weight: bold;
-    }
+    .navbar { background-color: #4a0d0a; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+    .nav-link { color: #fff !important; font-weight: bold; }
     .btn-login {
-      background-color: #000;
-      color: #fff;
-      border: none;
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      font-weight: bold;
+      background-color: #000; color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 4px; font-weight: bold;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
+    .btn-login:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3); animation: pulse 1s infinite; }
+    .btn-login:active { transform: rotate(-2deg) scale(0.98); }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
     }
-    h2 {
-      font-weight: bold;
-      margin-bottom: 2rem;
+
+    .container { max-width: 900px; margin: auto; }
+    h2 { font-weight: bold; margin-bottom: 2rem; }
+    .section-title { font-size: 1.4rem; font-weight: bold; margin: 2rem 0 1rem; color: #ffcfcf; }
+
+    .card.topic-card {
+      background: #7a2a25; border-radius: 16px; color: #fff; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease; overflow: hidden; height: 250px; display: flex; flex-direction: column; justify-content: flex-end; position: relative;
     }
-    .section-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin: 2rem 0 1rem;
-      color: #ffcfcf;
+    .card.topic-card:hover { transform: scale(1.03); }
+    .card.topic-card img {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0;
     }
-    .topic-card {
-      background: #7a2a25;
-      border-radius: 16px;
-      color: #fff;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
+    .card.topic-card .card-body {
+      position: relative; z-index: 1; background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 0 0 16px 16px; text-align: center;
     }
-    .topic-card:hover {
-      transform: scale(1.03);
-    }
-    .topic-card h5 {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin: 0.5rem 0;
-    }
-    a {
-      text-decoration: none;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #ccc;
-      background-color: #4a0d0a;
-      margin-top: 2rem;
-    }
+    .card.topic-card .card-body h5 { font-size: 1.3rem; font-weight: bold; margin: 0; }
+    .card.topic-card .card-body p { font-size: 0.95rem; color: #f0eaea; margin-top: 0.5rem; }
+
+    footer { text-align: center; padding: 1rem; font-size: 0.9rem; color: #ccc; background-color: #4a0d0a; margin-top: 2rem; }
   </style>
 </head>
 <body>
-
-  <!-- 🔝 Barra de Navegação -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand font-weight-bold" href="/">Ciclo em Foco</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir navegação">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
@@ -92,10 +64,8 @@
         <li class="nav-item"><a class="nav-link" href="/sintomas/">Sintomas</a></li>
         <li class="nav-item"><a class="nav-link" href="/historico/">Histórico</a></li>
       </ul>
-  
       {% if user.is_authenticated %}
-        <form action="/logout/" method="post" style="display:inline;">
-          {% csrf_token %}
+        <form action="/logout/" method="post" style="display:inline;">{% csrf_token %}
           <button type="submit" class="btn btn-login">Sair</button>
         </form>
       {% else %}
@@ -104,19 +74,20 @@
     </div>
   </nav>
 
-  <!-- 💡 Conteúdo Principal -->
   <div class="container mt-4">
     <h2 class="text-center">💡 Dicas e Orientações</h2>
 
-    <!-- Seção: Preocupações comuns sobre sexo -->
+    <!-- Preocupações comuns -->
     <div class="section">
-      <h4 class="section-title">🧠 Preocupações comuns sobre sexo</h4>
+      <h4 class="section-title"> Preocupações comuns sobre sexo</h4>
       <div class="row">
         <div class="col-md-6">
           <a href="/herpes-e-vida-sexual/">
             <div class="card topic-card">
+              <img src="/static/img/herpes.jpg" alt="Herpes e vida sexual" />
               <div class="card-body">
                 <h5>A herpes e minha vida sexual</h5>
+                <p>Entenda como lidar com o diagnóstico e manter uma vida sexual saudável.</p>
               </div>
             </div>
           </a>
@@ -124,8 +95,10 @@
         <div class="col-md-6">
           <a href="/como-aumentar-libido/">
             <div class="card topic-card">
+              <img src="/static/img/libido.jpg" alt="Como aumentar a libido" />
               <div class="card-body">
                 <h5>Como aumentar a libido</h5>
+                <p>Descubra hábitos e dicas que podem ajudar a melhorar o desejo sexual.</p>
               </div>
             </div>
           </a>
@@ -133,15 +106,17 @@
       </div>
     </div>
 
-    <!-- Seção: Tendências -->
+    <!-- Tendências -->
     <div class="section">
-      <h4 class="section-title">🔥 Tendências</h4>
+      <h4 class="section-title"> Tendências</h4>
       <div class="row">
         <div class="col-md-6">
           <a href="/sexo-anal-iniciantes/">
             <div class="card topic-card">
+              <img src="/static/img/sexo-anal.jpg" alt="Sexo anal para iniciantes" />
               <div class="card-body">
                 <h5>Sexo anal para iniciantes</h5>
+                <p>Orientações seguras e práticas para quem deseja começar sem medo.</p>
               </div>
             </div>
           </a>
@@ -149,8 +124,10 @@
         <div class="col-md-6">
           <a href="/bolinhas-na-vagina/">
             <div class="card topic-card">
+              <img src="/static/img/bolinhas.jpg" alt="Bolinhas na vagina" />
               <div class="card-body">
                 <h5>6 causas de bolinhas na vagina</h5>
+                <p>Conheça os principais motivos e quando procurar ajuda médica.</p>
               </div>
             </div>
           </a>
@@ -158,15 +135,17 @@
       </div>
     </div>
 
-    <!-- Seção: Fatos sobre atraso menstrual -->
+    <!-- Fatos sobre atraso menstrual -->
     <div class="section">
-      <h4 class="section-title">⏳ Fatos sobre atraso menstrual</h4>
+      <h4 class="section-title">Fatos sobre atraso menstrual</h4>
       <div class="row">
         <div class="col-md-6">
           <a href="/causas-atraso-menstrual/">
             <div class="card topic-card">
+              <img src="/static/img/atraso-menstrual.jpg" alt="O que pode causar atraso?" />
               <div class="card-body">
                 <h5>O que pode causar atraso?</h5>
+                <p>Veja fatores comuns que podem influenciar no ciclo menstrual.</p>
               </div>
             </div>
           </a>
@@ -174,8 +153,10 @@
         <div class="col-md-6">
           <a href="/quando-fazer-teste/">
             <div class="card topic-card">
+              <img src="/static/img/teste-menstrual.jpg" alt="Quando é hora de fazer um teste?" />
               <div class="card-body">
                 <h5>Quando é hora de fazer um teste?</h5>
+                <p>Saiba identificar o momento certo para realizar um teste de gravidez.</p>
               </div>
             </div>
           </a>
@@ -184,12 +165,8 @@
     </div>
   </div>
 
-  <!-- 📞 Rodapé -->
-  <footer>
-    <p>&copy; 2025 Ciclo em Foco - Todos os direitos reservados</p>
-  </footer>
+  <footer><p>&copy; 2025 Ciclo em Foco - Todos os direitos reservados</p></footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
